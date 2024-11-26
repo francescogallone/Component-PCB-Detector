@@ -1,0 +1,55 @@
+import matplotlib.pyplot as plt
+from matplotlib.table import Table
+from ultralytics import YOLO
+from torchsummary import summary
+
+# Cargar el modelo YOLOv8 previamente entrenado
+model = YOLO("C:/Users/Francesco/Desktop/ModelDetectorDeComp10epocas.pt")
+
+# Asegurarnos de que el modelo está en modo evaluación
+model.eval()
+
+# Crear una tabla para mostrar el resumen de manera bonita
+layer_counter = 1
+table_data = []
+
+# Definir las columnas para la tabla
+table_data.append(["Capa", "Tipo", "Parámetros"])
+
+# Acceder a las capas del modelo YOLOv8
+for module in model.model.modules():
+    num_params = sum(p.numel() for p in module.parameters())
+    
+    # Agregar una fila a la tabla por cada capa
+    table_data.append([str(layer_counter), str(module.__class__.__name__), f"{num_params:,}"])
+    
+    # Aumentar el contador para la siguiente capa
+    layer_counter += 1
+
+# Crear la figura para la imagen
+fig, ax = plt.subplots(figsize=(10, len(table_data) * 0.5))  # Ajustar tamaño de la figura según la cantidad de capas
+
+# Ocultar los ejes
+ax.axis('off')
+
+# Crear la tabla en matplotlib
+table = Table(ax, bbox=[0, 0, 1, 1])
+
+# Añadir filas y columnas a la tabla
+for i, row in enumerate(table_data):
+    for j, cell in enumerate(row):
+        table.add_cell(i, j, text=cell, loc='center', width=0.2, height=0.1, edgecolor='black', facecolor='white')
+
+# Configurar las filas y columnas de la tabla
+table.auto_set_font_size(False)
+table.set_fontsize(10)
+table.scale(1, 1.5)
+
+# Añadir la tabla al gráfico
+ax.add_table(table)
+
+# Guardar la imagen como un archivo PNG
+plt.savefig("yolov8_model_summary.png", bbox_inches='tight', dpi=300)
+
+# Mostrar la imagen (opcional)
+plt.show()
