@@ -1,0 +1,44 @@
+import os
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Ruta del archivo results.csv
+results_csv_path = os.path.join("runs", "detect", "train4", "results.csv")
+
+
+if not os.path.exists(results_csv_path):
+    print(f"No se encontró el archivo en la ruta: {results_csv_path}")
+else:
+    # Cargar los resultados desde el archivo CSV
+    results_df = pd.read_csv(results_csv_path)
+
+    # Obtener el número de épocas
+    epochs = results_df['epoch'].tolist()
+
+    # Crear la figura con subplots
+    fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+
+    # Gráfico de mAP@50
+    axes[0].plot(epochs, results_df['metrics/mAP50(B)'], label='mAP@50', color='blue')
+    axes[0].set_title('mAP@50')
+    axes[0].set_xlabel('Epochs')
+    axes[0].set_ylabel('mAP')
+    axes[0].grid(True)
+
+    # Gráfico de precisión
+    axes[1].plot(epochs, results_df['metrics/precision(B)'], label='Precision', color='green')
+    axes[1].set_title('Precision')
+    axes[1].set_xlabel('Epochs')
+    axes[1].set_ylabel('Precision')
+    axes[1].grid(True)
+
+    # Gráfico de recall
+    axes[2].plot(epochs, results_df['metrics/recall(B)'], label='Recall', color='orange')
+    axes[2].set_title('Recall')
+    axes[2].set_xlabel('Epochs')
+    axes[2].set_ylabel('Recall')
+    axes[2].grid(True)
+
+    plt.tight_layout()
+    plt.show()
+
