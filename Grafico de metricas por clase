@@ -1,0 +1,49 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+data = {
+    'class': ['capacitor', 'connector', 'crystal', 'ic', 'led', 'resistor', 'semiconductor', 'switch'],
+    'precision': [0.912, 0.843, 0.827, 0.856, 0.917, 0.876, 0.551, 0.616],
+    'recall': [0.333, 0.438, 0.733, 0.417, 0.377, 0.306, 0.484, 0.795],
+    'mAP': [0.461, 0.575, 0.807, 0.572, 0.466, 0.417, 0.549, 0.763]
+}
+
+df = pd.DataFrame(data)
+
+# Calcular promedios
+precision_avg = df['precision'].mean()
+recall_avg = df['recall'].mean()
+map_avg = df['mAP'].mean()
+
+
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+
+# Gráfico de precisión
+axes[0].bar(df['class'], df['precision'], label='Precisión', color='blue', alpha=0.6)
+axes[0].axhline(y=precision_avg, color='orange', linestyle='--', label='Promedio Precisión')
+axes[0].set_title('Precisión por Clase')
+axes[0].set_ylabel('Precisión')
+axes[0].legend()
+axes[0].set_xticklabels(df['class'], rotation=45, ha='right')
+
+# Gráfico de recall
+axes[1].bar(df['class'], df['recall'], label='Recall', color='green', alpha=0.6)
+axes[1].axhline(y=recall_avg, color='orange', linestyle='--', label='Promedio Recall')
+axes[1].set_title('Recall por Clase')
+axes[1].set_ylabel('Recall')
+axes[1].legend()
+axes[1].set_xticklabels(df['class'], rotation=45, ha='right')
+
+# Gráfico de mAP
+axes[2].bar(df['class'], df['mAP'], label='mAP', color='red', alpha=0.6)
+axes[2].axhline(y=map_avg, color='orange', linestyle='--', label='Promedio mAP')
+axes[2].set_title('mAP por Clase')
+axes[2].set_ylabel('mAP')
+axes[2].legend()
+axes[2].set_xticklabels(df['class'], rotation=45, ha='right')
+
+
+plt.tight_layout()
+plt.show()
