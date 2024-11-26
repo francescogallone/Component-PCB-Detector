@@ -1,0 +1,9 @@
+# Cargar YOLOv8 preentrenado 
+model = YOLO("yolov8n.pt")  
+
+# Entreno el modelo con los parámetros de data.yaml provistos del creador del dataset 
+# Lo entreno con 25 epocas y una resolucion 640x640 
+results = model.train(data="C:/Users/Francesco/Desktop/PCBDETECTOR10CLASES/data.yaml", epochs=25, imgsz=640)
+
+# Guardar los resultados
+model.save("C:/Users/Francesco/Desktop/ModelDetectorDeComp10epocas.pt")
