@@ -46,7 +46,6 @@ for idx, image_file in enumerate(random_images):
     image_path = os.path.join(test_images_path, image_file)
     label_path = os.path.join(test_labels_path, image_file.replace(".jpg", ".txt"))
 
-    # Leer la imagen
     img_true = cv2.imread(image_path)
     img_true = cv2.cvtColor(img_true, cv2.COLOR_BGR2RGB)
     img_pred = img_true.copy()
